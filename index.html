@@ -7,7 +7,43 @@
     <link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
-    
+    <div id="app">
+        <header id="hd">
+            <img src="./images/LOGO-FIN.png" alt="To Do List App" id="logo">
+        </header>
+        <main id="main">
+            <section id="task__cont">
+                <h2>Add a New Task</h2>
+                <form id="addTaskForm">
+                    <input type="text" id="task__title" placeholder="Enter a new task">
+                    <input type="text" id="task__desc" placeholder="Enter task details (optional)">
+                    <br>
+                    <input type="datetime-local" id="task__dueDate" placeholder="Select a due date">
+                    <br>
+                    <button type="submit" id="submit__butt">Add Task</button>
+                </form>
+            </section>
+            <section id="task__list">
+                <h2>Task List</h2>
+                <ul id="task__list__ul">
+                    <!-- <li class="task__item">
+                            <span class="task__item__num">1</span>
+                            <h3 class="task__item__title">Task Title</h3>
+                            <p class="task__item__desc">Task Description</p>
+                            <p class="task__item__dueDate">Due Date: 2026-08-01 12:00</p>
+                            <button class="task__item__btn">Complete</button>
+                            <button class="task__item__btn">Delete</button>
+                            <button class="task__item__btn">Edit</button>
+                    </li> -->
+
+                </ul>
+            </section>
+        </main>
+        <footer id="ft">
+            <p>&copy; 2026 To Do List App. All rights reserved.</p>
+        </footer>
+    </div>
+
 
 
 
