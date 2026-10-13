@@ -41,54 +41,149 @@ const taskDesc = document.getElementById('task__desc');
 const taskDueDate = document.getElementById('task__dueDate');
 const taskListContainer = document.getElementById('task__list__ul');
 const taskFormButton = document.getElementById('submit__butt');
+// app endpoint to store the tasks
 const taskList = []
-// console.log(taskTitle, taskDesc, taskDueDate, taskList);
 
-// console.log(taskTitle.value);
-
-// setTimeout(function() {
-//     console.log(taskTitle.value);
-// }, 
-// 10000);
+/*
+1 ----------------------------user input----------------
+                        |
+                        |
+                        |
 
 
+2 ------------------------------taskList Updated--------------
+                        |
+                        |
+                        |
 
-console.log(taskFormButton);
-
-console.log(this);
-
-// alert("hi, developer!")
+3 ------------------------------return UI--------------
 
 
-// console.log(x)
-// var x;
-// eventListener
-taskFormButton.addEventListener('click', function(event) {
+
+
+
+
+
+*/
+
+
+// console.log(taskFormButton);
+
+// console.log(this);
+
+// function to handle the add task event-----------------------------------
+const handleAddTask =  function(event) {
     event.preventDefault();
     console.log(taskTitle.value);
     console.log(taskDesc.value);
     console.log(taskDueDate.value);
-    let task= {
-        tasktTiltle: taskTitle.value,
-        taskDesc: taskDesc.value,
-        taskDueDate: taskDueDate.value,
-        taskStatus: 'pending'
-    }
-    taskList.push(task)
-    console.log(taskList);
 
+    taskList.push(new Task(taskTitle.value, taskDesc.value, taskDueDate.value))
+    console.log(taskList);
+    returnTask(taskList);
+}
+
+// function to handle the tasks return---------------------------------------
+const returnTask= function (tasks) {
+    taskListContainer.innerHTML='';
     
+    tasks.forEach(task => {
+        console.log(task);
+        returnUI(task);
+    });
+    // console.log(task);
+    // tasks.forEach(task => {
+    //     console.log(task);
+    //     return task;
+    // });
+}
+
+
+
+// function to return the UI--------------------------------------
+const returnUI = function (task) {
+    console.log(task);
+
     let taskitem=document.createElement('li');
     taskitem.innerHTML=`
     <span class="task__item__num">${taskListContainer.children.length+1}</span>
-    <h3 class="task__item__title">${taskTitle.value}</h3>
-    <p class="task__item__desc">${taskDesc.value}</p>
-    <p class="task__item__dueDate">Due Date: ${taskDueDate.value}</p>
-    <button class="task__item__btn">Complete</button>
-    <button class="task__item__btn">Delete</button>
-    <button class="task__item__btn">Edit</button>`
+    <h3 class="task__item__title">${task.taskTitle}</h3>
+    <p class="task__item__desc">${task.taskDesc}</p>
+    <p class="task__item__dueDate">Due Date: ${task.taskDueDate}</p>
+    <button class="task__item__com__btn">Complete</button>
+    <button class="task__item__del__btn">Delete</button>
+    <button class="task__item__edit__btn">Edit</button>`
     taskitem.classList.add('task__item');
     taskListContainer.appendChild(taskitem);
+    complete(task);
+    deleteTask(task);
+
+}
+// function to handle the complete task event---------------------------------------
+const complete= function (task) {
+
+    const compButt=document.querySelectorAll('.task__item__com__btn');
+    console.log(compButt);
+    compButt.forEach(button => {
+        console.log(task);
+        button.addEventListener('click', (e)=> handleCompleteTask(e, task));
+    });
+}
+
+// function to handle the complete task event---------------------------------------
+const handleCompleteTask = function(event, task) {
+    task.completed();
+    console.log(task);
+    console.log('Complete Task');
+    console.log(event.target.parentElement);
+    event.target.parentElement.classList.remove('task__item__com__btn');
+    event.target.parentElement.classList.toggle('completed');
+        event.target.classList.toggle('task__item__com__btn');
+    event.target.classList.toggle('completed');
+
+}
+// function to handle the delete task event---------------------------------------
+const deleteTask = function (task) {
+    const delButt=document.querySelectorAll('.task__item__del__btn');
+    console.log(delButt);
+    delButt.forEach(button => {
+        console.log(button)
+        button.addEventListener('click', (e)=> handleDelTask(e, task));
+    });
+}
+
+// function to handle the delete task event---------------------------------------
+const handleDelTask = function(event, task) {
+    task.deleted();
+    console.log('Delete Task');
+    console.log(event.target.parentElement);
+    event.target.parentElement.remove();
+    console.log(taskList);
+    // taskList.splice(taskList.indexOf(task), 1);
+    // console.log(taskList);
+    
+}
 
 
-});
+// const text= new String("kljjljjkjljdf");
+function Task(taskTitle, taskDesc, taskDueDate, taskStatus='pending'){
+    this.taskTitle=taskTitle;
+    this.taskDesc=taskDesc;
+    this.taskDueDate=taskDueDate;
+    this.taskStatus=taskStatus;
+    this.taskId=new Date().getTime();
+    this.completed=()=> {
+        this.taskStatus='completed';
+    }
+    this.deleted=()=> {
+        this.taskStatus='deleted';
+        taskList.splice(taskList.indexOf(this), 1);
+    }
+
+}
+// console.log(new Date().getTime())
+// console.log(new Task('Buy Milk', 'Buy Milk from the store', '2026-08-01'));
+
+
+// console.log(this)
+taskFormButton.addEventListener('click', handleAddTask);
